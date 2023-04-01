@@ -1,18 +1,26 @@
 tags:
-  - Posts
-summary: Create a new blog post
+  - Users
+summary: Update an existing user
 parameters:
+  - name: id
+    in: path
+    required: true
+    description: ID of user to update
+    schema:
+      type: integer
   - name: body
     in: body
     schema:
       type: object
       properties:
-        title:
+        username:
           type: string
-        body:
+        password:
+          type: string
+        email:
           type: string
     required: true
-    description: The updated post object
+    description: The updated user object
 requestBody:
   required: true
   content:
@@ -20,18 +28,22 @@ requestBody:
       schema:
         type: object
         properties:
-          title:
+          username:
             type: string
-            example: "Título do post"
-          body:
+            example: "username"
+          password:
             type: string
-            example: "Corpo do post"
+            example: "password"
+          email:
+            type: string
+            example: "email@example.com"
         required:
-          - title
-          - body
+          - username
+          - password
+          - email
 responses:
-  201:
-    description: The created post
+  200:
+    description: The updated user
     content:
       application/json:
         schema:
@@ -39,12 +51,12 @@ responses:
           properties:
             id:
               type: integer
-            title:
+            username:
               type: string
-            body:
+            email:
               type: string
-  default:
-    description: Unexpected error
+  404:
+    description: User not found
     content:
       application/json:
         schema:

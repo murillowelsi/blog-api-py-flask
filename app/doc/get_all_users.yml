@@ -1,0 +1,38 @@
+tags:
+  - Users
+summary: Get all users
+parameters:
+  - name: sort
+    in: query
+    schema:
+      type: string
+      enum: [id, created_at]
+    description: Sort users by id or created_at (default=id)
+responses:
+  200:
+    description: List of users
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              username:
+                type: string
+              email:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+  default:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string

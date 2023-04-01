@@ -1,26 +1,16 @@
 tags:
-  - Posts
-summary: Update a blog post by ID
+  - Users
+summary: Get user by ID
 parameters:
   - name: id
     in: path
-    type: integer
-    required: true
-    description: ID of the post to update
-  - name: body
-    in: body
     schema:
-      type: object
-      properties:
-        title:
-          type: string
-        body:
-          type: string
+      type: integer
     required: true
-    description: The updated post object
+    description: User ID
 responses:
   200:
-    description: The updated post object
+    description: User with specified ID
     content:
       application/json:
         schema:
@@ -28,14 +18,15 @@ responses:
           properties:
             id:
               type: integer
-            title:
+            username:
               type: string
-            body:
+            email:
               type: string
             created_at:
               type: string
+              format: date-time
   404:
-    description: Post not found
+    description: User not found
     content:
       application/json:
         schema:
