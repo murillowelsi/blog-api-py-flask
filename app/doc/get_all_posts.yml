@@ -6,7 +6,7 @@ parameters:
   - name: sort
     in: query
     type: string
-    enum: [id, created_at]
+    enum: [ id, created_at ]
     default: id
     description: Sort posts by id or creation date
 responses:

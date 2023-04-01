@@ -50,4 +50,3 @@ class PostRepository:
             return post.to_dict()
         else:
             return None
-

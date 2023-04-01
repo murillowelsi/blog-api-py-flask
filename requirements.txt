@@ -1,0 +1,5 @@
+flask-jwt-extended
+Flask~=2.2.3
+flasgger~=0.9.5
+alembic~=1.10.2
+SQLAlchemy~=2.0.8

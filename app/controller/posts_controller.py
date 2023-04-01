@@ -8,11 +8,11 @@ from app.utils.util import create_json_response, create_error_response
 
 base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
 
-bp = Blueprint('controller', __name__)
+posts_bp = Blueprint('posts_bp', __name__)
 post_service = PostService()
 
 
-@bp.route('/posts', methods=['GET'])
+@posts_bp.route('/posts', methods=['GET'])
 @swag_from(os.path.join(base_path, 'get_all_posts.yml'))
 def get_all_posts():
     sort_by = request.args.get('sort', 'id')
@@ -20,16 +20,15 @@ def get_all_posts():
 
     posts = post_service.get_all_posts(sort_by=sort_column)
 
-    formatted_posts = posts
+    response_data = posts
 
     if sort_column == 'created_at':
-        formatted_posts = sorted(formatted_posts, key=lambda k: k['created_at'])
+        response_data = sorted(response_data, key=lambda k: k['created_at'])
 
-    response_data = {'posts': formatted_posts}
     return create_json_response(response_data, 200)
 
 
-@bp.route('/posts/<int:id>', methods=['GET'])
+@posts_bp.route('/posts/<int:id>', methods=['GET'])
 @swag_from(os.path.join(base_path, 'get_post_by_id.yml'))
 def get_post_by_id(id):
     post = post_service.get_post_by_id(id)
@@ -41,7 +40,7 @@ def get_post_by_id(id):
     return create_json_response(formatted_post, 200)
 
 
-@bp.route('/posts', methods=['POST'])
+@posts_bp.route('/posts', methods=['POST'])
 @swag_from(os.path.join(base_path, 'create_post.yml'))
 def create_post():
     data = request.get_json()
@@ -53,7 +52,7 @@ def create_post():
     return create_json_response(response_data, 201)
 
 
-@bp.route('/posts/<int:id>', methods=['DELETE'])
+@posts_bp.route('/posts/<int:id>', methods=['DELETE'])
 @swag_from(os.path.join(base_path, 'delete_post_by_id.yml'))
 def delete_post_by_id(id):
     success = post_service.delete_post_by_id(id)
@@ -64,7 +63,7 @@ def delete_post_by_id(id):
         return create_error_response(404, 'Post not found')
 
 
-@bp.route('/posts/<int:id>', methods=['PUT'])
+@posts_bp.route('/posts/<int:id>', methods=['PUT'])
 @swag_from(os.path.join(base_path, 'update_post_by_id.yml'))
 def update_post_by_id(id):
     data = request.get_json()

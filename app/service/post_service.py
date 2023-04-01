@@ -25,4 +25,3 @@ class PostService:
 
     def update_post_by_id(self, post_id, title=None, body=None):
         return self.post_repository.update_post_by_id(post_id, title=title, body=body)
-
