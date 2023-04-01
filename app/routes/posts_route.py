@@ -1,6 +1,12 @@
+import os
+
+from flasgger import swag_from
 from flask import Blueprint, request, jsonify
 
 from app.database import connect
+
+base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
+
 
 bp = Blueprint('routes', __name__)
 conn = connect()
@@ -18,6 +24,7 @@ with conn.cursor() as cur:
 
 
 @bp.route('/posts', methods=['GET'])
+@swag_from(os.path.join(base_path, 'get_all_posts.yml'))
 def get_all_posts():
     sort_by = request.args.get('sort', 'id')
     sort_column = 'created_at' if sort_by == 'created_at' else 'id'
@@ -41,6 +48,7 @@ def get_all_posts():
 
 
 @bp.route('/posts/<int:id>', methods=['GET'])
+@swag_from(os.path.join(base_path, 'get_post_by_id.yml'))
 def get_post_by_id(id):
     post = get_post_from_database(id)
 
@@ -52,6 +60,7 @@ def get_post_by_id(id):
 
 
 @bp.route('/posts', methods=['POST'])
+@swag_from(os.path.join(base_path, 'create_post.yml'))
 def create_post():
     data = request.get_json()
     title, body = data.get('title'), data.get('body')

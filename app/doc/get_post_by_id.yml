@@ -1,0 +1,44 @@
+---
+tags:
+  - Posts
+summary: Get a blog post by ID
+parameters:
+  - name: id
+    in: path
+    type: integer
+    required: true
+    description: ID of the post to get
+responses:
+  200:
+    description: The post with the specified ID
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            title:
+              type: string
+            body:
+              type: string
+            created_at:
+              type: string
+  404:
+    description: Post not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+  default:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string

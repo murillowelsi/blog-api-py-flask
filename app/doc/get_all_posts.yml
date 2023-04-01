@@ -1,0 +1,41 @@
+---
+tags:
+  - Posts
+summary: List all blog posts
+parameters:
+  - name: sort
+    in: query
+    type: string
+    enum: [id, created_at]
+    default: id
+    description: Sort posts by id or creation date
+responses:
+  200:
+    description: A list of posts
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            posts:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  created_at:
+                    type: string
+  default:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string

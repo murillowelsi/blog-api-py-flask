@@ -1,0 +1,38 @@
+---
+tags:
+  - Posts
+summary: Create a new blog post
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          title:
+            type: string
+          body:
+            type: string
+responses:
+  201:
+    description: The created post
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            title:
+              type: string
+            body:
+              type: string
+  default:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
