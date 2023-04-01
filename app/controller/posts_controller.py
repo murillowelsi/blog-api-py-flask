@@ -8,8 +8,7 @@ from app.utils.util import create_json_response, create_error_response
 
 base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
 
-
-bp = Blueprint('routes', __name__)
+bp = Blueprint('controller', __name__)
 post_service = PostService()
 
 
@@ -53,3 +52,28 @@ def create_post():
     response_data = post
     return create_json_response(response_data, 201)
 
+
+@bp.route('/posts/<int:id>', methods=['DELETE'])
+@swag_from(os.path.join(base_path, 'delete_post_by_id.yml'))
+def delete_post_by_id(id):
+    success = post_service.delete_post_by_id(id)
+
+    if success:
+        return create_json_response({}, 204)
+    else:
+        return create_error_response(404, 'Post not found')
+
+
+@bp.route('/posts/<int:id>', methods=['PUT'])
+@swag_from(os.path.join(base_path, 'update_post_by_id.yml'))
+def update_post_by_id(id):
+    data = request.get_json()
+    title, body = data.get('title'), data.get('body')
+
+    updated_post = post_service.update_post_by_id(id, title=title, body=body)
+
+    if updated_post is None:
+        return create_error_response(404, 'Post not found')
+
+    response_data = updated_post
+    return create_json_response(response_data, 200)

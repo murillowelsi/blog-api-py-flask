@@ -1,6 +1,6 @@
 from flask_migrate import Migrate
 from app.database import db
-from app.routes.posts_route import bp
+from app.controller.posts_controller import bp
 from app import create_app
 from app.database import create_tables
 from flasgger import Swagger

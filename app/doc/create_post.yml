@@ -2,6 +2,18 @@
 tags:
   - Posts
 summary: Create a new blog post
+parameters:
+  - name: body
+    in: body
+    schema:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+    required: true
+    description: The updated post object
 requestBody:
   required: true
   content:
@@ -11,8 +23,13 @@ requestBody:
         properties:
           title:
             type: string
+            example: "Título do post"
           body:
             type: string
+            example: "Corpo do post"
+        required:
+          - title
+          - body
 responses:
   201:
     description: The created post

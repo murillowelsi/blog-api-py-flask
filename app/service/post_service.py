@@ -19,3 +19,10 @@ class PostService:
     def create_post(self, title, body):
         post = self.post_repository.create_post(title=title, body=body)
         return post.to_dict()
+
+    def delete_post_by_id(self, post_id):
+        return self.post_repository.delete_post_by_id(post_id)
+
+    def update_post_by_id(self, post_id, title=None, body=None):
+        return self.post_repository.update_post_by_id(post_id, title=title, body=body)
+

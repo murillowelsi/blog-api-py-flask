@@ -1,0 +1,31 @@
+---
+tags:
+  - Posts
+summary: Delete a blog post by ID
+parameters:
+  - name: id
+    in: path
+    type: integer
+    required: true
+    description: ID of the post to delete
+responses:
+  204:
+    description: Post deleted successfully
+  404:
+    description: Post not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+  default:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
