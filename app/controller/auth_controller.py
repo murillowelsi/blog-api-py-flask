@@ -1,42 +1,38 @@
-from flask_jwt_extended import (
-    create_access_token
-)
+import os
+import datetime
 
-from app.repository.user_repository import UserRepository
+from flasgger import swag_from
+from flask import Blueprint, request, current_app, jsonify
+from flask_jwt_extended import create_access_token
+from functools import wraps
+from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+
 from app.utils.util import create_error_response, create_json_response
 
+base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
 
-class AuthController:
-    def __init__(self, app):
-        self.app = app
-        self.user_repository = UserRepository()
-        self.register_routes()
+auth_bp = Blueprint('auth_bp', __name__)
 
-    def register_routes(self):
-        self.app.add_url_rule(
-            '/login',
-            view_func=self.login,
-            methods=['POST']
-        )
 
-    def login(self):
-        username = request.json.get('username', None)
-        password = request.json.get('password', None)
+def protected_route(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        verify_jwt_in_request()
+        current_user = get_jwt_identity()
+        if not current_user:
+            return create_error_response(401, 'Token is missing or invalid')
+        return func(*args, **kwargs)
 
-        if not username:
-            return create_error_response(400, 'Username is required')
+    return decorated_function
 
-        if not password:
-            return create_error_response(400, 'Password is required')
 
-        user = self.user_repository.get_user_by_username(username)
+@auth_bp.route('/auth', methods=['POST'])
+@swag_from(os.path.join(base_path, 'auth.yml'))
+def auth_login():
+    data = request.get_json()
+    email, password = data.get('email'), data.get('password')
 
-        if not user:
-            return create_error_response(401, 'Invalid username or password')
+    access_token = create_access_token(identity=email, expires_delta=datetime.timedelta(days=7))
 
-        if not check_password_hash(user.password, password):
-            return create_error_response(401, 'Invalid username or password')
-
-        access_token = create_access_token(identity=user.id)
-        response_data = {'access_token': access_token}
-        return create_json_response(response_data, 200)
+    response_data = {'access_token': access_token}
+    return create_json_response(response_data, 200)

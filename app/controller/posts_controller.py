@@ -3,6 +3,7 @@ import os
 from flasgger import swag_from
 from flask import Blueprint, request
 
+from app.controller.auth_controller import protected_route
 from app.service.post_service import PostService
 from app.utils.util import create_json_response, create_error_response
 
@@ -10,6 +11,12 @@ base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
 
 posts_bp = Blueprint('posts_bp', __name__)
 post_service = PostService()
+
+
+@posts_bp.before_request
+@protected_route
+def before_request():
+    pass
 
 
 @posts_bp.route('/posts', methods=['GET'])

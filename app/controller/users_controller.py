@@ -3,6 +3,7 @@ import os
 from flasgger import swag_from
 from flask import Blueprint, request
 
+from app.controller.auth_controller import protected_route
 from app.service.user_service import UserService
 from app.utils.util import create_json_response, create_error_response
 
@@ -10,6 +11,12 @@ base_path = '/Users/murillowelsi/PycharmProjects/blog-api/app/doc'
 
 users_bp = Blueprint('users_bp', __name__)
 user_service = UserService()
+
+
+@users_bp.before_request
+@protected_route
+def before_request():
+    pass
 
 
 @users_bp.route('/users', methods=['GET'])
